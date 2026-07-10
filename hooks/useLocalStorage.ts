@@ -23,16 +23,26 @@ export function useLocalStorage<T>(
   const [isHydrated, setIsHydrated] = useState(false);
 
   useEffect(() => {
-    try {
-      const serializedValue = window.localStorage.getItem(key);
-      if (serializedValue !== null) {
-        setStoredValue(JSON.parse(serializedValue) as T);
+    let isCurrent = true;
+
+    queueMicrotask(() => {
+      if (!isCurrent) return;
+
+      try {
+        const serializedValue = window.localStorage.getItem(key);
+        if (serializedValue !== null) {
+          setStoredValue(JSON.parse(serializedValue) as T);
+        }
+      } catch {
+        window.localStorage.removeItem(key);
+      } finally {
+        setIsHydrated(true);
       }
-    } catch {
-      window.localStorage.removeItem(key);
-    } finally {
-      setIsHydrated(true);
-    }
+    });
+
+    return () => {
+      isCurrent = false;
+    };
   }, [key]);
 
   useEffect(() => {

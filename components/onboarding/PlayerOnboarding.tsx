@@ -4,13 +4,14 @@ import { ArrowLeft, Plus, Users } from "lucide-react";
 import { useState, type FormEvent } from "react";
 import type { Player } from "@/types/game";
 import { BulkImport } from "./BulkImport";
-import { SkillTierSelector } from "./SkillTierSelector";
+import { PlayerList } from "./PlayerList";
 
 type PlayerOnboardingProps = {
   players: Player[];
   onAddPlayer: (name: string) => void;
   onAddPlayers: (names: string[]) => void;
   onUpdateSkill: (playerId: string, skill: Player["skill"]) => void;
+  onDeletePlayer: (playerId: string) => void;
   onBack: () => void;
 };
 
@@ -23,6 +24,7 @@ export function PlayerOnboarding({
   onAddPlayer,
   onAddPlayers,
   onUpdateSkill,
+  onDeletePlayer,
   onBack,
 }: PlayerOnboardingProps) {
   const [name, setName] = useState("");
@@ -120,28 +122,11 @@ export function PlayerOnboarding({
         </p>
       </form>
 
-      {players.length > 0 && (
-        <div className="mt-5 space-y-2" aria-label="Players added">
-          {players.map((player, index) => (
-            <div
-              key={player.id}
-              className="flex min-h-12 flex-wrap items-center gap-3 rounded-2xl border border-white/8 bg-white/4 p-3"
-            >
-              <span className="font-mono text-xs text-slate-600">
-                {String(index + 1).padStart(2, "0")}
-              </span>
-              <span className="min-w-24 flex-1 truncate font-bold text-slate-100">
-                {player.name}
-              </span>
-              <SkillTierSelector
-                value={player.skill}
-                onChange={(skill) => onUpdateSkill(player.id, skill)}
-                playerName={player.name}
-              />
-            </div>
-          ))}
-        </div>
-      )}
+      <PlayerList
+        players={players}
+        onUpdateSkill={onUpdateSkill}
+        onDelete={onDeletePlayer}
+      />
     </section>
   );
 }

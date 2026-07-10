@@ -61,6 +61,12 @@ export function PickleballCuzziesApp() {
             ),
           }))
         }
+        onDeletePlayer={(playerId) =>
+          setAppState((current) => ({
+            ...current,
+            players: current.players.filter((player) => player.id !== playerId),
+          }))
+        }
       />
     );
   }
