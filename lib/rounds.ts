@@ -1,7 +1,6 @@
 import { createBalancedMatchups } from "@/lib/matchmaking";
 import { orderBenchQueue, selectPlayersForRound, updateWaitHistory } from "@/lib/queue";
-import type { PlayStyle } from "@/components/welcome/PlayStyleSelector";
-import type { CourtMatch, Player } from "@/types/game";
+import type { CourtMatch, Player, PlayStyle } from "@/types/game";
 
 export type GeneratedRound = {
   round: number;

@@ -1,8 +1,9 @@
 "use client";
 
 import { ArrowRight } from "lucide-react";
+import type { PlayStyle } from "@/types/game";
 import { BrandHero } from "./BrandHero";
-import { PlayStyleSelector, type PlayStyle } from "./PlayStyleSelector";
+import { PlayStyleSelector } from "./PlayStyleSelector";
 
 type WelcomeScreenProps = {
   playStyle: PlayStyle;

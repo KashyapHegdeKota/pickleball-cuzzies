@@ -2,30 +2,12 @@
 
 import { ChevronDown, ClipboardPaste, UsersRound } from "lucide-react";
 import { useMemo, useState } from "react";
+import { parsePlayerNames } from "@/lib/playerNames";
 
 type BulkImportProps = {
   existingNames: string[];
   onImport: (names: string[]) => void;
 };
-
-export function parsePlayerNames(input: string): string[] {
-  const seen = new Set<string>();
-
-  return input
-    .split(/[\n,;]+/)
-    .map((entry) =>
-      entry
-        .replace(/^\s*(?:[-*•–—]|\d+[.)])\s*/, "")
-        .trim()
-        .replace(/\s+/g, " "),
-    )
-    .filter((name) => {
-      const key = name.toLocaleLowerCase();
-      if (!name || name.length > 40 || seen.has(key)) return false;
-      seen.add(key);
-      return true;
-    });
-}
 
 export function BulkImport({ existingNames, onImport }: BulkImportProps) {
   const [isOpen, setIsOpen] = useState(false);

@@ -73,7 +73,11 @@ export function useLocalStorage<T>(
             ? (nextValue as (current: T) => T)(currentValue)
             : nextValue;
 
-        window.localStorage.setItem(key, JSON.stringify(resolvedValue));
+        try {
+          window.localStorage.setItem(key, JSON.stringify(resolvedValue));
+        } catch {
+          // Keep the in-memory session usable if device storage is unavailable.
+        }
         return resolvedValue;
       });
     },

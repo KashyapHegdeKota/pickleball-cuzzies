@@ -35,12 +35,33 @@ function createPlayer(name: string): Player {
 
 export function PickleballCuzziesApp() {
   const [isResetOpen, setIsResetOpen] = useState(false);
-  const { value: persistedState, setValue: setAppState, removeValue } =
+  const {
+    value: persistedState,
+    setValue: setAppState,
+    removeValue,
+    isHydrated,
+  } =
     useLocalStorage<PersistedAppState>(
       "pickleball-cuzzies:session",
       INITIAL_APP_STATE,
     );
   const appState = { ...INITIAL_APP_STATE, ...persistedState };
+
+  if (!isHydrated) {
+    return (
+      <div className="grid min-h-72 place-items-center text-center" role="status" aria-live="polite">
+        <div>
+          <span aria-hidden="true" className="text-6xl drop-shadow-[0_0_22px_rgb(204_255_0/0.35)]">
+            🤙
+          </span>
+          <p className="mt-4 font-mono text-xs font-black tracking-[0.2em] text-brand-lime uppercase">
+            Loading the crew
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   let content: React.ReactNode;
 
   if (appState.screen === "dashboard") {
@@ -50,9 +71,6 @@ export function PickleballCuzziesApp() {
         courts={appState.courts}
         players={appState.players}
         benchPlayerIds={appState.benchPlayerIds}
-        onBackToRoster={() =>
-          setAppState((current) => ({ ...current, screen: "players" }))
-        }
         onScoreChange={(courtId, team, score) =>
           setAppState((current) => ({
             ...current,

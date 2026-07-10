@@ -27,8 +27,8 @@ export function AppShell({ children }: PropsWithChildren) {
           </div>
         </header>
 
-        <main className="flex flex-1 items-center px-4 py-8 sm:px-6 sm:py-12">
-          <div className="w-full">{children}</div>
+        <main className="flex flex-1 flex-col px-4 py-8 sm:px-6 sm:py-12">
+          <div className="my-auto w-full">{children}</div>
         </main>
 
         <footer className="safe-area-bottom px-4 text-center sm:px-6">

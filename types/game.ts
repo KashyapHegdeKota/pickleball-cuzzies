@@ -1,6 +1,5 @@
-import type { PlayStyle } from "@/components/welcome/PlayStyleSelector";
-
 export type AppScreen = "welcome" | "players" | "dashboard";
+export type PlayStyle = "tournament" | "rotation";
 export type SkillTier = "good" | "mid" | "ass";
 
 export type Player = {

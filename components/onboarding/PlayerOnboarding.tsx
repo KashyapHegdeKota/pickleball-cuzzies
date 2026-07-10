@@ -2,6 +2,7 @@
 
 import { ArrowLeft, Play, Plus, RotateCcw, Users } from "lucide-react";
 import { useState, type FormEvent } from "react";
+import { normalizePlayerName } from "@/lib/playerNames";
 import type { Player } from "@/types/game";
 import { BulkImport } from "./BulkImport";
 import { PlayerList } from "./PlayerList";
@@ -16,10 +17,6 @@ type PlayerOnboardingProps = {
   onRequestReset: () => void;
   onBack: () => void;
 };
-
-function normalizeName(name: string) {
-  return name.trim().replace(/\s+/g, " ");
-}
 
 export function PlayerOnboarding({
   players,
@@ -36,7 +33,7 @@ export function PlayerOnboarding({
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const normalizedName = normalizeName(name);
+    const normalizedName = normalizePlayerName(name);
 
     if (!normalizedName) {
       setError("Enter a player name first.");

@@ -1,8 +1,7 @@
 "use client";
 
 import { Repeat2, Trophy } from "lucide-react";
-
-export type PlayStyle = "tournament" | "rotation";
+import type { PlayStyle } from "@/types/game";
 
 type PlayStyleSelectorProps = {
   value: PlayStyle;

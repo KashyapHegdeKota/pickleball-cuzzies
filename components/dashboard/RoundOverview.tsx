@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, BarChart3, RefreshCw, RotateCcw } from "lucide-react";
+import { Activity, BarChart3, RefreshCw, RotateCcw } from "lucide-react";
 import { useState } from "react";
 import type { CourtMatch, Player } from "@/types/game";
 import { BenchQueue } from "./BenchQueue";
@@ -12,7 +12,6 @@ type RoundOverviewProps = {
   courts: CourtMatch[];
   players: Player[];
   benchPlayerIds: string[];
-  onBackToRoster: () => void;
   onScoreChange: (courtId: string, team: "A" | "B", score: number) => void;
   onFinishMatch: (courtId: string) => void;
   onGenerateNextRound: () => void;
@@ -24,7 +23,6 @@ export function RoundOverview({
   courts,
   players,
   benchPlayerIds,
-  onBackToRoster,
   onScoreChange,
   onFinishMatch,
   onGenerateNextRound,
@@ -39,14 +37,10 @@ export function RoundOverview({
   return (
     <section className="mx-auto w-full max-w-xl" aria-labelledby="round-title">
       <div className="flex items-center justify-between gap-3">
-        <button
-          type="button"
-          onClick={onBackToRoster}
-          className="-ml-2 inline-flex min-h-11 items-center gap-2 rounded-xl px-2 text-sm font-bold text-slate-400 hover:text-white"
-        >
-          <ArrowLeft aria-hidden="true" size={18} />
-          Roster
-        </button>
+        <p className="inline-flex min-h-11 items-center gap-2 text-sm font-bold text-emerald-300">
+          <Activity aria-hidden="true" size={17} />
+          Live session
+        </p>
         <button
           type="button"
           onClick={onRequestReset}

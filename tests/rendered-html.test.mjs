@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { access, readFile, readdir } from "node:fs/promises";
+import { access, readFile, readdir, stat } from "node:fs/promises";
 import test from "node:test";
 
 const developmentPreviewMeta =
@@ -36,8 +36,9 @@ test("server-renders the Pickleball Cuzzies application shell", async () => {
   assert.doesNotMatch(html, developmentPreviewMeta);
   assert.match(html, /<title>Pickleball Cuzzies<\/title>/i);
   assert.match(html, /name="theme-color" content="#020617"/i);
-  assert.match(html, /Court ready/i);
-  assert.match(html, /Fair games\. Fast rotations\. Zero sideline math\./i);
+  assert.match(html, /Loading the crew/i);
+  assert.match(html, /property="og:image"/i);
+  assert.match(html, /\/og\.png/i);
 });
 
 test("keeps the mobile design system centralized", async () => {
@@ -62,6 +63,9 @@ test("keeps the mobile design system centralized", async () => {
   assert.match(layout, /viewportFit:\s*"cover"/);
   assert.match(packageJson, /"name": "pickleball-cuzzies"/);
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);
+  assert.doesNotMatch(packageJson, /drizzle/);
   assert.ok(!appFiles.includes("_sites-preview"));
   await assert.rejects(access(new URL("app/_sites-preview", templateRoot)));
+  const socialImage = await stat(new URL("../public/og.png", import.meta.url));
+  assert.ok(socialImage.size > 100_000);
 });
