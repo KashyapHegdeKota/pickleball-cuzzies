@@ -1,5 +1,6 @@
-import { ArrowLeft, RefreshCw, Users } from "lucide-react";
+import { ArrowLeft, RefreshCw } from "lucide-react";
 import type { CourtMatch, Player } from "@/types/game";
+import { BenchQueue } from "./BenchQueue";
 import { CourtCard } from "./CourtCard";
 
 type RoundOverviewProps = {
@@ -58,12 +59,7 @@ export function RoundOverview({
         ))}
       </div>
 
-      <div className="mt-5 flex min-h-14 items-center gap-3 rounded-2xl border border-white/8 bg-white/4 px-4 text-sm text-slate-400">
-        <Users aria-hidden="true" size={18} className="text-brand-cyan" />
-        {benchPlayerIds.length === 0
-          ? "Everyone is on a court."
-          : `${benchPlayerIds.length} waiting on the bench.`}
-      </div>
+      <BenchQueue benchPlayerIds={benchPlayerIds} playersById={playersById} />
 
       <div className="sticky bottom-0 z-20 -mx-4 mt-6 bg-gradient-to-t from-app-canvas via-app-canvas/95 to-transparent px-4 pt-6 safe-area-bottom">
         <button
