@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, Play, Plus, Users } from "lucide-react";
+import { ArrowLeft, Play, Plus, RotateCcw, Users } from "lucide-react";
 import { useState, type FormEvent } from "react";
 import type { Player } from "@/types/game";
 import { BulkImport } from "./BulkImport";
@@ -13,6 +13,7 @@ type PlayerOnboardingProps = {
   onUpdateSkill: (playerId: string, skill: Player["skill"]) => void;
   onDeletePlayer: (playerId: string) => void;
   onStartSession: () => void;
+  onRequestReset: () => void;
   onBack: () => void;
 };
 
@@ -27,6 +28,7 @@ export function PlayerOnboarding({
   onUpdateSkill,
   onDeletePlayer,
   onStartSession,
+  onRequestReset,
   onBack,
 }: PlayerOnboardingProps) {
   const [name, setName] = useState("");
@@ -57,14 +59,26 @@ export function PlayerOnboarding({
 
   return (
     <section className="mx-auto w-full max-w-xl" aria-labelledby="players-title">
-      <button
-        type="button"
-        onClick={onBack}
-        className="-ml-2 inline-flex min-h-11 items-center gap-2 rounded-xl px-2 text-sm font-bold text-slate-400 hover:text-white"
-      >
-        <ArrowLeft aria-hidden="true" size={18} />
-        Play style
-      </button>
+      <div className="flex items-center justify-between gap-3">
+        <button
+          type="button"
+          onClick={onBack}
+          className="-ml-2 inline-flex min-h-11 items-center gap-2 rounded-xl px-2 text-sm font-bold text-slate-400 hover:text-white"
+        >
+          <ArrowLeft aria-hidden="true" size={18} />
+          Play style
+        </button>
+        {players.length > 0 && (
+          <button
+            type="button"
+            onClick={onRequestReset}
+            className="inline-flex min-h-11 items-center gap-2 rounded-xl px-2 text-sm font-bold text-slate-500 hover:text-orange-400"
+          >
+            <RotateCcw aria-hidden="true" size={16} />
+            Reset
+          </button>
+        )}
+      </div>
 
       <div className="mt-4 flex items-end justify-between gap-4">
         <div>

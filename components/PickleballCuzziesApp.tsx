@@ -1,8 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import { PlayerOnboarding } from "@/components/onboarding/PlayerOnboarding";
 import { WelcomeScreen } from "@/components/welcome/WelcomeScreen";
 import { RoundOverview } from "@/components/dashboard/RoundOverview";
+import { ResetDialog } from "@/components/shared/ResetDialog";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { generateNextRound } from "@/lib/rounds";
 import { recordMatchResult } from "@/lib/results";
@@ -32,15 +34,17 @@ function createPlayer(name: string): Player {
 }
 
 export function PickleballCuzziesApp() {
-  const { value: persistedState, setValue: setAppState } =
+  const [isResetOpen, setIsResetOpen] = useState(false);
+  const { value: persistedState, setValue: setAppState, removeValue } =
     useLocalStorage<PersistedAppState>(
       "pickleball-cuzzies:session",
       INITIAL_APP_STATE,
     );
   const appState = { ...INITIAL_APP_STATE, ...persistedState };
+  let content: React.ReactNode;
 
   if (appState.screen === "dashboard") {
-    return (
+    content = (
       <RoundOverview
         round={appState.round}
         courts={appState.courts}
@@ -80,12 +84,11 @@ export function PickleballCuzziesApp() {
             return { ...normalized, ...generated };
           })
         }
+        onRequestReset={() => setIsResetOpen(true)}
       />
     );
-  }
-
-  if (appState.screen === "players") {
-    return (
+  } else if (appState.screen === "players") {
+    content = (
       <PlayerOnboarding
         players={appState.players}
         onBack={() =>
@@ -135,19 +138,36 @@ export function PickleballCuzziesApp() {
             };
           })
         }
+        onRequestReset={() => setIsResetOpen(true)}
+      />
+    );
+  } else {
+    content = (
+      <WelcomeScreen
+        playStyle={appState.playStyle}
+        onPlayStyleChange={(playStyle) =>
+          setAppState((current) => ({ ...current, playStyle }))
+        }
+        onContinue={() =>
+          setAppState((current) => ({ ...current, screen: "players" }))
+        }
       />
     );
   }
 
   return (
-    <WelcomeScreen
-      playStyle={appState.playStyle}
-      onPlayStyleChange={(playStyle) =>
-        setAppState((current) => ({ ...current, playStyle }))
-      }
-      onContinue={() =>
-        setAppState((current) => ({ ...current, screen: "players" }))
-      }
-    />
+    <>
+      {content}
+      <ResetDialog
+        isOpen={isResetOpen}
+        playerCount={appState.players.length}
+        onClose={() => setIsResetOpen(false)}
+        onConfirm={() => {
+          window.localStorage.removeItem("pickleball-cuzzies:play-style");
+          removeValue();
+          setIsResetOpen(false);
+        }}
+      />
+    </>
   );
 }

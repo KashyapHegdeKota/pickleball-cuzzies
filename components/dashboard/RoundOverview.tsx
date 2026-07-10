@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, BarChart3, RefreshCw } from "lucide-react";
+import { ArrowLeft, BarChart3, RefreshCw, RotateCcw } from "lucide-react";
 import { useState } from "react";
 import type { CourtMatch, Player } from "@/types/game";
 import { BenchQueue } from "./BenchQueue";
@@ -16,6 +16,7 @@ type RoundOverviewProps = {
   onScoreChange: (courtId: string, team: "A" | "B", score: number) => void;
   onFinishMatch: (courtId: string) => void;
   onGenerateNextRound: () => void;
+  onRequestReset: () => void;
 };
 
 export function RoundOverview({
@@ -27,6 +28,7 @@ export function RoundOverview({
   onScoreChange,
   onFinishMatch,
   onGenerateNextRound,
+  onRequestReset,
 }: RoundOverviewProps) {
   const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(false);
   const playersById = new Map(players.map((player) => [player.id, player]));
@@ -36,14 +38,24 @@ export function RoundOverview({
 
   return (
     <section className="mx-auto w-full max-w-xl" aria-labelledby="round-title">
-      <button
-        type="button"
-        onClick={onBackToRoster}
-        className="-ml-2 inline-flex min-h-11 items-center gap-2 rounded-xl px-2 text-sm font-bold text-slate-400 hover:text-white"
-      >
-        <ArrowLeft aria-hidden="true" size={18} />
-        Roster
-      </button>
+      <div className="flex items-center justify-between gap-3">
+        <button
+          type="button"
+          onClick={onBackToRoster}
+          className="-ml-2 inline-flex min-h-11 items-center gap-2 rounded-xl px-2 text-sm font-bold text-slate-400 hover:text-white"
+        >
+          <ArrowLeft aria-hidden="true" size={18} />
+          Roster
+        </button>
+        <button
+          type="button"
+          onClick={onRequestReset}
+          className="inline-flex min-h-11 items-center gap-2 rounded-xl px-2 text-sm font-bold text-slate-500 hover:text-orange-400"
+        >
+          <RotateCcw aria-hidden="true" size={16} />
+          Reset
+        </button>
+      </div>
 
       <div className="mt-4 flex items-end justify-between gap-3">
         <div>
