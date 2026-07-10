@@ -36,7 +36,8 @@ export function PlayerList({
       {players.map((player, index) => (
         <li
           key={player.id}
-          className="rounded-3xl border border-white/8 bg-white/4 p-3 shadow-[inset_0_1px_0_rgb(255_255_255/0.03)]"
+          className="animate-card-in rounded-3xl border border-white/8 bg-white/4 p-3 shadow-[inset_0_1px_0_rgb(255_255_255/0.03)]"
+          style={{ animationDelay: `${Math.min(index * 28, 280)}ms` }}
         >
           <div className="flex min-h-11 items-center gap-3">
             <span className="grid size-8 shrink-0 place-items-center rounded-xl bg-white/5 font-mono text-xs text-slate-500">

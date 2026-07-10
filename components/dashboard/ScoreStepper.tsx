@@ -35,8 +35,10 @@ export function ScoreStepper({
       </button>
 
       <output
+        key={score}
         aria-label={`${teamLabel} score`}
-        className="text-center font-mono text-4xl font-black tabular-nums text-white"
+        aria-live="polite"
+        className="animate-score-pop text-center font-mono text-4xl font-black tabular-nums text-white"
       >
         {score}
       </output>

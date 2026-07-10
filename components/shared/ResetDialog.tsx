@@ -43,7 +43,7 @@ export function ResetDialog({
         onClick={onClose}
         className="absolute inset-0 size-full bg-slate-950/85 backdrop-blur-sm"
       />
-      <section className="relative w-full max-w-sm rounded-[2rem] border border-white/10 bg-slate-900 p-5 shadow-[0_28px_100px_rgb(0_0_0/0.65)]">
+      <section className="animate-card-in relative w-full max-w-sm rounded-[2rem] border border-white/10 bg-slate-900 p-5 shadow-[0_28px_100px_rgb(0_0_0/0.65)]">
         <div className="flex items-start gap-3">
           <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-orange-500/12 text-orange-400">
             <AlertTriangle aria-hidden="true" size={22} />

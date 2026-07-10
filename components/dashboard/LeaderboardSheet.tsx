@@ -52,10 +52,10 @@ export function LeaderboardSheet({
         type="button"
         onClick={onClose}
         aria-label="Close leaderboard"
-        className="absolute inset-0 size-full bg-slate-950/80 backdrop-blur-sm"
+        className="animate-backdrop-in absolute inset-0 size-full bg-slate-950/80 backdrop-blur-sm"
       />
 
-      <section className="safe-area-bottom absolute inset-x-0 bottom-0 mx-auto max-h-[82dvh] w-full max-w-2xl overflow-hidden rounded-t-[2rem] border border-white/10 bg-slate-900 shadow-[0_-28px_100px_rgb(0_0_0/0.6)]">
+      <section className="animate-sheet-up safe-area-bottom absolute inset-x-0 bottom-0 mx-auto max-h-[82dvh] w-full max-w-2xl overflow-hidden rounded-t-[2rem] border border-white/10 bg-slate-900 shadow-[0_-28px_100px_rgb(0_0_0/0.6)]">
         <div className="mx-auto mt-2 h-1.5 w-12 rounded-full bg-slate-700" />
         <header className="flex items-center gap-3 border-b border-white/8 px-4 py-4 sm:px-6">
           <span className="grid size-11 place-items-center rounded-2xl bg-brand-lime/10 text-brand-lime">

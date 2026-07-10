@@ -37,7 +37,7 @@ export function CourtCard({
   const isTied = court.scoreA === court.scoreB;
 
   return (
-    <article className="relative overflow-hidden rounded-4xl border border-white/10 bg-app-surface/72 p-4 shadow-surface backdrop-blur-xl sm:p-5">
+    <article className="animate-card-in relative overflow-hidden rounded-4xl border border-white/10 bg-app-surface/72 p-4 shadow-surface backdrop-blur-xl sm:p-5">
       <div
         aria-hidden="true"
         className="absolute -right-16 -top-16 size-36 rounded-full bg-brand-lime/8 blur-3xl"

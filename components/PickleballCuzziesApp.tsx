@@ -157,7 +157,9 @@ export function PickleballCuzziesApp() {
 
   return (
     <>
-      {content}
+      <div key={appState.screen} className="animate-screen-in">
+        {content}
+      </div>
       <ResetDialog
         isOpen={isResetOpen}
         playerCount={appState.players.length}
