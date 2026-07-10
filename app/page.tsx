@@ -1,10 +1,10 @@
 import { AppShell } from "@/components/layout/AppShell";
-import { BrandHero } from "@/components/welcome/BrandHero";
+import { WelcomeScreen } from "@/components/welcome/WelcomeScreen";
 
 export default function Home() {
   return (
     <AppShell>
-      <BrandHero />
+      <WelcomeScreen />
     </AppShell>
   );
 }
