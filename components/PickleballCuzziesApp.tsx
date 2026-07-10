@@ -44,6 +44,15 @@ export function PickleballCuzziesApp() {
             players: [...current.players, createPlayer(name)],
           }))
         }
+        onAddPlayers={(names) =>
+          setAppState((current) => ({
+            ...current,
+            players: [
+              ...current.players,
+              ...names.map((name) => createPlayer(name)),
+            ],
+          }))
+        }
       />
     );
   }

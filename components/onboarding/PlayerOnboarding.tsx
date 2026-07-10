@@ -3,10 +3,12 @@
 import { ArrowLeft, Plus, Users } from "lucide-react";
 import { useState, type FormEvent } from "react";
 import type { Player } from "@/types/game";
+import { BulkImport } from "./BulkImport";
 
 type PlayerOnboardingProps = {
   players: Player[];
   onAddPlayer: (name: string) => void;
+  onAddPlayers: (names: string[]) => void;
   onBack: () => void;
 };
 
@@ -17,6 +19,7 @@ function normalizeName(name: string) {
 export function PlayerOnboarding({
   players,
   onAddPlayer,
+  onAddPlayers,
   onBack,
 }: PlayerOnboardingProps) {
   const [name, setName] = useState("");
@@ -78,6 +81,11 @@ export function PlayerOnboarding({
         Add the full group now. Skills and rotations can be adjusted before the
         first serve.
       </p>
+
+      <BulkImport
+        existingNames={players.map((player) => player.name)}
+        onImport={onAddPlayers}
+      />
 
       <form onSubmit={handleSubmit} className="mt-7">
         <label htmlFor="player-name" className="text-sm font-bold text-slate-200">
