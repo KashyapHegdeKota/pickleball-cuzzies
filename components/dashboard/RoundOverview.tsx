@@ -1,7 +1,11 @@
-import { ArrowLeft, RefreshCw } from "lucide-react";
+"use client";
+
+import { ArrowLeft, BarChart3, RefreshCw } from "lucide-react";
+import { useState } from "react";
 import type { CourtMatch, Player } from "@/types/game";
 import { BenchQueue } from "./BenchQueue";
 import { CourtCard } from "./CourtCard";
+import { LeaderboardSheet } from "./LeaderboardSheet";
 
 type RoundOverviewProps = {
   round: number;
@@ -24,6 +28,7 @@ export function RoundOverview({
   onFinishMatch,
   onGenerateNextRound,
 }: RoundOverviewProps) {
+  const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(false);
   const playersById = new Map(players.map((player) => [player.id, player]));
   const unfinishedCourtCount = courts.filter(
     (court) => court.status === "active",
@@ -40,12 +45,24 @@ export function RoundOverview({
         Roster
       </button>
 
-      <p className="mt-4 font-mono text-xs font-bold tracking-[0.2em] text-brand-cyan uppercase">
-        Round {round}
-      </p>
-      <h1 id="round-title" className="mt-2 text-4xl font-black tracking-[-0.05em]">
-        Courts are set
-      </h1>
+      <div className="mt-4 flex items-end justify-between gap-3">
+        <div>
+          <p className="font-mono text-xs font-bold tracking-[0.2em] text-brand-cyan uppercase">
+            Round {round}
+          </p>
+          <h1 id="round-title" className="mt-2 text-4xl font-black tracking-[-0.05em]">
+            Courts are set
+          </h1>
+        </div>
+        <button
+          type="button"
+          onClick={() => setIsLeaderboardOpen(true)}
+          className="grid size-12 shrink-0 place-items-center rounded-2xl border border-white/10 bg-white/5 text-brand-lime"
+          aria-label="Open leaderboard"
+        >
+          <BarChart3 aria-hidden="true" size={21} />
+        </button>
+      </div>
 
       <div className="mt-7 space-y-3">
         {courts.map((court) => (
@@ -74,6 +91,12 @@ export function RoundOverview({
             : "Generate next round"}
         </button>
       </div>
+
+      <LeaderboardSheet
+        players={players}
+        isOpen={isLeaderboardOpen}
+        onClose={() => setIsLeaderboardOpen(false)}
+      />
     </section>
   );
 }
