@@ -1,4 +1,4 @@
-import type { PersistedAppState } from "@/types/game";
+import type { CourtMatch, PersistedAppState } from "@/types/game";
 
 export function recordMatchResult(
   state: PersistedAppState,
@@ -10,10 +10,14 @@ export function recordMatchResult(
     return state;
   }
 
-  const winner = court.scoreA > court.scoreB ? "A" : "B";
+  const winner: "A" | "B" = court.scoreA > court.scoreB ? "A" : "B";
   const winnerIds = new Set(winner === "A" ? court.teamA : court.teamB);
   const participantIds = new Set([...court.teamA, ...court.teamB]);
-  const finishedCourt = { ...court, status: "finished" as const, winner };
+  const finishedCourt: CourtMatch = {
+    ...court,
+    status: "finished",
+    winner,
+  };
 
   return {
     ...state,
