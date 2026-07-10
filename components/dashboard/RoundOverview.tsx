@@ -1,5 +1,6 @@
-import { ArrowLeft, Swords, Users } from "lucide-react";
+import { ArrowLeft, Users } from "lucide-react";
 import type { CourtMatch, Player } from "@/types/game";
+import { CourtCard } from "./CourtCard";
 
 type RoundOverviewProps = {
   round: number;
@@ -38,19 +39,7 @@ export function RoundOverview({
 
       <div className="mt-7 space-y-3">
         {courts.map((court) => (
-          <article key={court.id} className="rounded-3xl border border-white/10 bg-white/5 p-4">
-            <div className="flex items-center gap-2 text-sm font-black text-brand-lime">
-              <Swords aria-hidden="true" size={17} />
-              Court {court.courtNumber}
-            </div>
-            <p className="mt-3 font-bold text-white">
-              {court.teamA.map((id) => playersById.get(id)?.name).join(" + ")}
-            </p>
-            <p className="my-1 text-xs font-black tracking-widest text-slate-600 uppercase">vs</p>
-            <p className="font-bold text-white">
-              {court.teamB.map((id) => playersById.get(id)?.name).join(" + ")}
-            </p>
-          </article>
+          <CourtCard key={court.id} court={court} playersById={playersById} />
         ))}
       </div>
 
