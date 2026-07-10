@@ -5,6 +5,7 @@ import { WelcomeScreen } from "@/components/welcome/WelcomeScreen";
 import { RoundOverview } from "@/components/dashboard/RoundOverview";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { generateNextRound } from "@/lib/rounds";
+import { recordMatchResult } from "@/lib/results";
 import type { PersistedAppState, Player } from "@/types/game";
 
 const INITIAL_APP_STATE: PersistedAppState = {
@@ -59,6 +60,25 @@ export function PickleballCuzziesApp() {
                 : court,
             ),
           }))
+        }
+        onFinishMatch={(courtId) =>
+          setAppState((current) =>
+            recordMatchResult(
+              { ...INITIAL_APP_STATE, ...current },
+              courtId,
+            ),
+          )
+        }
+        onGenerateNextRound={() =>
+          setAppState((current) => {
+            const normalized = { ...INITIAL_APP_STATE, ...current };
+            const generated = generateNextRound(
+              normalized.players,
+              normalized.playStyle,
+              normalized.round,
+            );
+            return { ...normalized, ...generated };
+          })
         }
       />
     );

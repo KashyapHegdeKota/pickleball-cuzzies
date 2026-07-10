@@ -1,4 +1,4 @@
-import { ArrowLeft, Users } from "lucide-react";
+import { ArrowLeft, RefreshCw, Users } from "lucide-react";
 import type { CourtMatch, Player } from "@/types/game";
 import { CourtCard } from "./CourtCard";
 
@@ -9,6 +9,8 @@ type RoundOverviewProps = {
   benchPlayerIds: string[];
   onBackToRoster: () => void;
   onScoreChange: (courtId: string, team: "A" | "B", score: number) => void;
+  onFinishMatch: (courtId: string) => void;
+  onGenerateNextRound: () => void;
 };
 
 export function RoundOverview({
@@ -18,8 +20,13 @@ export function RoundOverview({
   benchPlayerIds,
   onBackToRoster,
   onScoreChange,
+  onFinishMatch,
+  onGenerateNextRound,
 }: RoundOverviewProps) {
   const playersById = new Map(players.map((player) => [player.id, player]));
+  const unfinishedCourtCount = courts.filter(
+    (court) => court.status === "active",
+  ).length;
 
   return (
     <section className="mx-auto w-full max-w-xl" aria-labelledby="round-title">
@@ -46,6 +53,7 @@ export function RoundOverview({
             court={court}
             playersById={playersById}
             onScoreChange={onScoreChange}
+            onFinish={onFinishMatch}
           />
         ))}
       </div>
@@ -55,6 +63,20 @@ export function RoundOverview({
         {benchPlayerIds.length === 0
           ? "Everyone is on a court."
           : `${benchPlayerIds.length} waiting on the bench.`}
+      </div>
+
+      <div className="sticky bottom-0 z-20 -mx-4 mt-6 bg-gradient-to-t from-app-canvas via-app-canvas/95 to-transparent px-4 pt-6 safe-area-bottom">
+        <button
+          type="button"
+          onClick={onGenerateNextRound}
+          disabled={unfinishedCourtCount > 0}
+          className="flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-brand-lime px-5 font-black text-slate-950 shadow-lime-glow disabled:cursor-not-allowed disabled:bg-slate-800 disabled:text-slate-500 disabled:shadow-none"
+        >
+          <RefreshCw aria-hidden="true" size={19} strokeWidth={2.6} />
+          {unfinishedCourtCount > 0
+            ? `Finish ${unfinishedCourtCount} ${unfinishedCourtCount === 1 ? "court" : "courts"}`
+            : "Generate next round"}
+        </button>
       </div>
     </section>
   );
