@@ -1,0 +1,80 @@
+@import "tailwindcss";
+@config "../tailwind.config.mjs";
+
+:root {
+  --app-canvas: #020617;
+  --app-surface: #0f172a;
+  --app-surface-raised: #111c2f;
+  --app-border: rgb(255 255 255 / 0.1);
+  --brand-lime: #ccff00;
+  --brand-cyan: #22d3ee;
+  --app-foreground: #f8fafc;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-app-canvas: var(--app-canvas);
+  --color-app-surface: var(--app-surface);
+  --color-app-surface-raised: var(--app-surface-raised);
+  --color-app-border: var(--app-border);
+  --color-brand-lime: var(--brand-lime);
+  --color-brand-cyan: var(--brand-cyan);
+  --color-app-foreground: var(--app-foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  min-height: 100%;
+  background: var(--app-canvas);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100dvh;
+  margin: 0;
+  background: var(--app-canvas);
+  color: var(--app-foreground);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  overscroll-behavior-x: none;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button,
+[role="button"],
+a,
+input,
+textarea,
+select {
+  -webkit-tap-highlight-color: transparent;
+}
+
+:focus-visible {
+  outline: 2px solid var(--brand-lime);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: rgb(204 255 0 / 0.25);
+  color: #ffffff;
+}
+
+.safe-area-top {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+.safe-area-bottom {
+  padding-bottom: max(1rem, env(safe-area-inset-bottom, 0px));
+}
