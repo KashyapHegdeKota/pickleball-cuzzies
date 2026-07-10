@@ -53,6 +53,14 @@ export function PickleballCuzziesApp() {
             ],
           }))
         }
+        onUpdateSkill={(playerId, skill) =>
+          setAppState((current) => ({
+            ...current,
+            players: current.players.map((player) =>
+              player.id === playerId ? { ...player, skill } : player,
+            ),
+          }))
+        }
       />
     );
   }

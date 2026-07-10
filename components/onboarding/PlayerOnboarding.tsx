@@ -4,11 +4,13 @@ import { ArrowLeft, Plus, Users } from "lucide-react";
 import { useState, type FormEvent } from "react";
 import type { Player } from "@/types/game";
 import { BulkImport } from "./BulkImport";
+import { SkillTierSelector } from "./SkillTierSelector";
 
 type PlayerOnboardingProps = {
   players: Player[];
   onAddPlayer: (name: string) => void;
   onAddPlayers: (names: string[]) => void;
+  onUpdateSkill: (playerId: string, skill: Player["skill"]) => void;
   onBack: () => void;
 };
 
@@ -20,6 +22,7 @@ export function PlayerOnboarding({
   players,
   onAddPlayer,
   onAddPlayers,
+  onUpdateSkill,
   onBack,
 }: PlayerOnboardingProps) {
   const [name, setName] = useState("");
@@ -122,12 +125,19 @@ export function PlayerOnboarding({
           {players.map((player, index) => (
             <div
               key={player.id}
-              className="flex min-h-12 items-center gap-3 rounded-2xl border border-white/8 bg-white/4 px-4"
+              className="flex min-h-12 flex-wrap items-center gap-3 rounded-2xl border border-white/8 bg-white/4 p-3"
             >
               <span className="font-mono text-xs text-slate-600">
                 {String(index + 1).padStart(2, "0")}
               </span>
-              <span className="truncate font-bold text-slate-100">{player.name}</span>
+              <span className="min-w-24 flex-1 truncate font-bold text-slate-100">
+                {player.name}
+              </span>
+              <SkillTierSelector
+                value={player.skill}
+                onChange={(skill) => onUpdateSkill(player.id, skill)}
+                playerName={player.name}
+              />
             </div>
           ))}
         </div>
