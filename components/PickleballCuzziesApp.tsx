@@ -48,6 +48,18 @@ export function PickleballCuzziesApp() {
         onBackToRoster={() =>
           setAppState((current) => ({ ...current, screen: "players" }))
         }
+        onScoreChange={(courtId, team, score) =>
+          setAppState((current) => ({
+            ...current,
+            courts: current.courts.map((court) =>
+              court.id === courtId && court.status === "active"
+                ? team === "A"
+                  ? { ...court, scoreA: score }
+                  : { ...court, scoreB: score }
+                : court,
+            ),
+          }))
+        }
       />
     );
   }

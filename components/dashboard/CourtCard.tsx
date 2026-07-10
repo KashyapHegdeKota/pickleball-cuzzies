@@ -1,9 +1,11 @@
 import { CircleDot, Sparkles } from "lucide-react";
 import type { CourtMatch, Player } from "@/types/game";
+import { ScoreStepper } from "./ScoreStepper";
 
 type CourtCardProps = {
   court: CourtMatch;
   playersById: ReadonlyMap<string, Player>;
+  onScoreChange: (courtId: string, team: "A" | "B", score: number) => void;
 };
 
 function TeamNames({
@@ -24,7 +26,11 @@ function TeamNames({
   );
 }
 
-export function CourtCard({ court, playersById }: CourtCardProps) {
+export function CourtCard({
+  court,
+  playersById,
+  onScoreChange,
+}: CourtCardProps) {
   return (
     <article className="relative overflow-hidden rounded-4xl border border-white/10 bg-app-surface/72 p-4 shadow-surface backdrop-blur-xl sm:p-5">
       <div
@@ -51,17 +57,23 @@ export function CourtCard({ court, playersById }: CourtCardProps) {
       </header>
 
       <div className="relative mt-4 grid gap-2">
-        <div className="flex min-h-24 items-center gap-3 rounded-3xl border border-white/8 bg-white/4 p-4">
-          <div className="grid size-10 shrink-0 place-items-center rounded-2xl bg-brand-cyan/10 font-mono text-sm font-black text-brand-cyan">
-            A
+        <div className="rounded-3xl border border-white/8 bg-white/4 p-4">
+          <div className="flex min-h-12 items-center gap-3">
+            <div className="grid size-10 shrink-0 place-items-center rounded-2xl bg-brand-cyan/10 font-mono text-sm font-black text-brand-cyan">
+              A
+            </div>
+            <div className="min-w-0 flex-1">
+              <TeamNames playerIds={court.teamA} playersById={playersById} />
+              <p className="mt-1 text-xs text-slate-500">Team rating {court.teamASkill}</p>
+            </div>
           </div>
-          <div className="min-w-0 flex-1">
-            <TeamNames playerIds={court.teamA} playersById={playersById} />
-            <p className="mt-1 text-xs text-slate-500">Team rating {court.teamASkill}</p>
-          </div>
-          <span className="font-mono text-4xl font-black tabular-nums text-white">
-            {court.scoreA}
-          </span>
+          <ScoreStepper
+            score={court.scoreA}
+            teamLabel="Team A"
+            tone="cyan"
+            disabled={court.status === "finished"}
+            onChange={(score) => onScoreChange(court.id, "A", score)}
+          />
         </div>
 
         <div className="relative z-10 -my-4 grid place-items-center">
@@ -70,17 +82,23 @@ export function CourtCard({ court, playersById }: CourtCardProps) {
           </span>
         </div>
 
-        <div className="flex min-h-24 items-center gap-3 rounded-3xl border border-white/8 bg-white/4 p-4">
-          <div className="grid size-10 shrink-0 place-items-center rounded-2xl bg-brand-lime/10 font-mono text-sm font-black text-brand-lime">
-            B
+        <div className="rounded-3xl border border-white/8 bg-white/4 p-4">
+          <div className="flex min-h-12 items-center gap-3">
+            <div className="grid size-10 shrink-0 place-items-center rounded-2xl bg-brand-lime/10 font-mono text-sm font-black text-brand-lime">
+              B
+            </div>
+            <div className="min-w-0 flex-1">
+              <TeamNames playerIds={court.teamB} playersById={playersById} />
+              <p className="mt-1 text-xs text-slate-500">Team rating {court.teamBSkill}</p>
+            </div>
           </div>
-          <div className="min-w-0 flex-1">
-            <TeamNames playerIds={court.teamB} playersById={playersById} />
-            <p className="mt-1 text-xs text-slate-500">Team rating {court.teamBSkill}</p>
-          </div>
-          <span className="font-mono text-4xl font-black tabular-nums text-white">
-            {court.scoreB}
-          </span>
+          <ScoreStepper
+            score={court.scoreB}
+            teamLabel="Team B"
+            tone="lime"
+            disabled={court.status === "finished"}
+            onChange={(score) => onScoreChange(court.id, "B", score)}
+          />
         </div>
       </div>
     </article>

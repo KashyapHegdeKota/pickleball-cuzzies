@@ -8,6 +8,7 @@ type RoundOverviewProps = {
   players: Player[];
   benchPlayerIds: string[];
   onBackToRoster: () => void;
+  onScoreChange: (courtId: string, team: "A" | "B", score: number) => void;
 };
 
 export function RoundOverview({
@@ -16,6 +17,7 @@ export function RoundOverview({
   players,
   benchPlayerIds,
   onBackToRoster,
+  onScoreChange,
 }: RoundOverviewProps) {
   const playersById = new Map(players.map((player) => [player.id, player]));
 
@@ -39,7 +41,12 @@ export function RoundOverview({
 
       <div className="mt-7 space-y-3">
         {courts.map((court) => (
-          <CourtCard key={court.id} court={court} playersById={playersById} />
+          <CourtCard
+            key={court.id}
+            court={court}
+            playersById={playersById}
+            onScoreChange={onScoreChange}
+          />
         ))}
       </div>
 
