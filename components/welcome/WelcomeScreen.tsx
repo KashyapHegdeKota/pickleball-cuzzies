@@ -1,19 +1,32 @@
 "use client";
 
-import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { ArrowRight } from "lucide-react";
 import { BrandHero } from "./BrandHero";
 import { PlayStyleSelector, type PlayStyle } from "./PlayStyleSelector";
 
-const DEFAULT_PLAY_STYLE: PlayStyle = "tournament";
+type WelcomeScreenProps = {
+  playStyle: PlayStyle;
+  onPlayStyleChange: (playStyle: PlayStyle) => void;
+  onContinue: () => void;
+};
 
-export function WelcomeScreen() {
-  const { value: playStyle, setValue: setPlayStyle } =
-    useLocalStorage<PlayStyle>("pickleball-cuzzies:play-style", DEFAULT_PLAY_STYLE);
-
+export function WelcomeScreen({
+  playStyle,
+  onPlayStyleChange,
+  onContinue,
+}: WelcomeScreenProps) {
   return (
     <div className="mx-auto w-full max-w-lg">
       <BrandHero />
-      <PlayStyleSelector value={playStyle} onChange={setPlayStyle} />
+      <PlayStyleSelector value={playStyle} onChange={onPlayStyleChange} />
+      <button
+        type="button"
+        onClick={onContinue}
+        className="mt-5 flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-brand-lime px-5 font-black text-slate-950 shadow-lime-glow"
+      >
+        Build the roster
+        <ArrowRight aria-hidden="true" size={20} strokeWidth={2.6} />
+      </button>
     </div>
   );
 }
