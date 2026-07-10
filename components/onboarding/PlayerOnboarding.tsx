@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, Plus, Users } from "lucide-react";
+import { ArrowLeft, Play, Plus, Users } from "lucide-react";
 import { useState, type FormEvent } from "react";
 import type { Player } from "@/types/game";
 import { BulkImport } from "./BulkImport";
@@ -12,6 +12,7 @@ type PlayerOnboardingProps = {
   onAddPlayers: (names: string[]) => void;
   onUpdateSkill: (playerId: string, skill: Player["skill"]) => void;
   onDeletePlayer: (playerId: string) => void;
+  onStartSession: () => void;
   onBack: () => void;
 };
 
@@ -25,6 +26,7 @@ export function PlayerOnboarding({
   onAddPlayers,
   onUpdateSkill,
   onDeletePlayer,
+  onStartSession,
   onBack,
 }: PlayerOnboardingProps) {
   const [name, setName] = useState("");
@@ -127,6 +129,20 @@ export function PlayerOnboarding({
         onUpdateSkill={onUpdateSkill}
         onDelete={onDeletePlayer}
       />
+
+      <div className="sticky bottom-0 z-20 -mx-4 mt-6 bg-gradient-to-t from-app-canvas via-app-canvas/95 to-transparent px-4 pt-6 safe-area-bottom">
+        <button
+          type="button"
+          onClick={onStartSession}
+          disabled={players.length < 4}
+          className="flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-brand-lime px-5 font-black text-slate-950 shadow-lime-glow disabled:cursor-not-allowed disabled:bg-slate-800 disabled:text-slate-500 disabled:shadow-none"
+        >
+          <Play aria-hidden="true" size={20} fill="currentColor" />
+          {players.length < 4
+            ? `Add ${4 - players.length} more to start`
+            : "Generate first round"}
+        </button>
+      </div>
     </section>
   );
 }

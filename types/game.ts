@@ -14,8 +14,34 @@ export type Player = {
   consecutiveBenches: number;
 };
 
+export type MatchStatus = "active" | "finished";
+
+export type CourtMatch = {
+  id: string;
+  courtNumber: number;
+  round: number;
+  teamA: [string, string];
+  teamB: [string, string];
+  teamASkill: number;
+  teamBSkill: number;
+  scoreA: number;
+  scoreB: number;
+  status: MatchStatus;
+  winner?: "A" | "B";
+};
+
+export type MatchHistoryEntry = CourtMatch & {
+  status: "finished";
+  winner: "A" | "B";
+  finishedAt: string;
+};
+
 export type PersistedAppState = {
   screen: AppScreen;
   playStyle: PlayStyle;
   players: Player[];
+  round: number;
+  courts: CourtMatch[];
+  benchPlayerIds: string[];
+  history: MatchHistoryEntry[];
 };

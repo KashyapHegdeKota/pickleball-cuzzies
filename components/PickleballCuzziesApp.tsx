@@ -2,13 +2,19 @@
 
 import { PlayerOnboarding } from "@/components/onboarding/PlayerOnboarding";
 import { WelcomeScreen } from "@/components/welcome/WelcomeScreen";
+import { RoundOverview } from "@/components/dashboard/RoundOverview";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { generateNextRound } from "@/lib/rounds";
 import type { PersistedAppState, Player } from "@/types/game";
 
 const INITIAL_APP_STATE: PersistedAppState = {
   screen: "welcome",
   playStyle: "tournament",
   players: [],
+  round: 0,
+  courts: [],
+  benchPlayerIds: [],
+  history: [],
 };
 
 function createPlayer(name: string): Player {
@@ -25,11 +31,26 @@ function createPlayer(name: string): Player {
 }
 
 export function PickleballCuzziesApp() {
-  const { value: appState, setValue: setAppState } =
+  const { value: persistedState, setValue: setAppState } =
     useLocalStorage<PersistedAppState>(
       "pickleball-cuzzies:session",
       INITIAL_APP_STATE,
     );
+  const appState = { ...INITIAL_APP_STATE, ...persistedState };
+
+  if (appState.screen === "dashboard") {
+    return (
+      <RoundOverview
+        round={appState.round}
+        courts={appState.courts}
+        players={appState.players}
+        benchPlayerIds={appState.benchPlayerIds}
+        onBackToRoster={() =>
+          setAppState((current) => ({ ...current, screen: "players" }))
+        }
+      />
+    );
+  }
 
   if (appState.screen === "players") {
     return (
@@ -66,6 +87,21 @@ export function PickleballCuzziesApp() {
             ...current,
             players: current.players.filter((player) => player.id !== playerId),
           }))
+        }
+        onStartSession={() =>
+          setAppState((current) => {
+            const normalized = { ...INITIAL_APP_STATE, ...current };
+            const generated = generateNextRound(
+              normalized.players,
+              normalized.playStyle,
+              normalized.round,
+            );
+            return {
+              ...normalized,
+              ...generated,
+              screen: "dashboard",
+            };
+          })
         }
       />
     );
